@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-t="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>EduPay · School PTA Fees</title>
+<meta name="theme-color" content="#0b6e6e">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://js.paystack.co/v1/inline.js" async></script>
+<style>
+:root{--bg:#f2f5f7;--card:#fff;--ink:#12202b;--mut:#5f7180;--line:#dfe6ea;--pri:#0b6e6e;--on:#fff;--soft:#e3f2f1;--gold:#e8b100;--ok:#14855a;--bad:#cc3b4b;--warn:#a66f00;--sh:0 1px 2px #0001,0 10px 30px #12202b14}
+[data-t=dark]{--bg:#0b141a;--card:#111f27;--ink:#e8f0f4;--mut:#8ea3b0;--line:#1f323d;--pri:#3cc9c0;--on:#04201e;--soft:#12302f;--gold:#f2c230;--ok:#43d996;--bad:#ff7080;--warn:#f2c230;--sh:0 10px 30px #0008}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:15px/1.5 Figtree,system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+h1,h2,h3,.brand{font-family:Sora,sans-serif;letter-spacing:-.02em}
+[hidden]{display:none!important}
+input,select{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;outline:0}
+input:focus,select:focus,button:focus-visible{border-color:var(--pri);box-shadow:0 0 0 3px var(--soft);outline:2px solid transparent}
+label{display:block;font-size:.8rem;font-weight:600;color:var(--mut);margin:0 0 5px}
+.f{margin-bottom:13px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{border:0;border-radius:10px;padding:11px 18px;font:600 .92rem Figtree;cursor:pointer;background:var(--pri);color:var(--on);display:inline-flex;gap:8px;align-items:center;justify-content:center}
+.btn:hover{filter:brightness(1.08)}.btn.g{background:transparent;color:var(--ink);border:1.5px solid var(--line)}.btn.d{background:var(--bad);color:#fff}.btn.w{width:100%}.btn.s{padding:6px 11px;font-size:.8rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--sh)}
+.card h3{font-size:1.02rem;margin-bottom:14px}
+.mut{color:var(--mut);font-size:.85rem}.msg{padding:10px 13px;border-radius:10px;font-size:.85rem;margin:10px 0;background:var(--soft)}.msg.e{background:#cc3b4b22;color:var(--bad)}
+/* AUTH */
+.auth{min-height:100vh;display:grid;grid-template-columns:1.05fr 1fr}
+.hero{background:var(--pri);color:var(--on);padding:56px;display:flex;flex-direction:column;justify-content:space-between;background-image:repeating-linear-gradient(135deg,#ffffff0d 0 22px,transparent 22px 44px)}
+.hero .brand{font-size:1.6rem;font-weight:800}.hero h1{font-size:2.5rem;line-height:1.1;max-width:15ch;margin-bottom:14px}.hero p{max-width:40ch;opacity:.85}
+.strip{height:8px;border-radius:4px;background:linear-gradient(90deg,#cc3b4b 33%,var(--gold) 33% 66%,#14855a 66%);width:120px}
+.acard{padding:48px;display:flex;flex-direction:column;justify-content:center;max-width:480px;width:100%;margin:auto}
+.tabs{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:12px;margin-bottom:22px}
+.tabs button{flex:1;border:0;background:none;padding:9px;border-radius:9px;font:600 .85rem Figtree;color:var(--mut);cursor:pointer}.tabs .on{background:var(--card);color:var(--ink);box-shadow:var(--sh)}
+/* APP */
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.side{background:var(--card);border-right:1px solid var(--line);padding:22px 14px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.side .brand{font-size:1.35rem;font-weight:800;color:var(--pri);padding:0 10px 4px}.side .sc{padding:0 10px 22px;font-size:.78rem;color:var(--mut)}
+.nv{display:flex;gap:12px;align-items:center;width:100%;padding:11px 12px;border:0;background:none;border-radius:10px;font:600 .92rem Figtree;color:var(--mut);cursor:pointer;margin-bottom:2px;text-align:left}
+.nv i{font-style:normal;width:22px;text-align:center}.nv:hover{background:var(--bg)}.nv.on{background:var(--soft);color:var(--pri)}
+.main{padding:26px 30px 90px;max-width:1180px;width:100%}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:12px}.top h2{font-size:1.6rem}
+.bnav{display:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.st{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}.st b{display:block;font:700 1.45rem Sora;margin-top:2px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--pri)}
+.chart{display:flex;align-items:flex-end;gap:10px;height:150px}.chart div{flex:1;text-align:center;font-size:.7rem;color:var(--mut);display:flex;flex-direction:column;justify-content:flex-end;height:100%}.chart span{display:block;background:var(--pri);border-radius:6px 6px 0 0;min-height:3px;margin-bottom:5px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.88rem}th{text-align:left;font-size:.75rem;color:var(--mut);padding:9px 10px;border-bottom:1.5px solid var(--line);white-space:nowrap}td{padding:11px 10px;border-bottom:1px solid var(--line)}
+.b{padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;white-space:nowrap}.b.ok{background:#14855a22;color:var(--ok)}.b.pa{background:#e8b10026;color:var(--warn)}.b.no{background:#cc3b4b22;color:var(--bad)}
+.pills{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.pill{border:2px solid var(--line);border-radius:12px;padding:14px;text-align:center;cursor:pointer;font-weight:600;background:none;color:var(--ink);font-family:inherit}.pill.on{border-color:var(--pri);background:var(--soft)}
+.tb{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}.tb input,.tb select{flex:1;min-width:150px}
+.mo{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;padding:16px;z-index:50;overflow:auto}
+.mbox{background:var(--card);border-radius:16px;padding:26px;width:min(480px,100%);max-height:92vh;overflow:auto;box-shadow:var(--sh)}.mbox h3{margin-bottom:14px;font-size:1.15rem}.mf{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.rc dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:14px 0;font-size:.9rem}.rc dt{color:var(--mut)}.rc dd{text-align:right;font-weight:600;word-break:break-word}
+.code{font:800 1.9rem Sora;letter-spacing:.2em;text-align:center;color:var(--pri);padding:14px;border:2px dashed var(--pri);border-radius:12px;margin:10px 0}
+#toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:12px;font-size:.88rem;z-index:99;opacity:0;pointer-events:none;transition:opacity .25s;max-width:92vw}#toast.on{opacity:1}
+@media(max-width:860px){.auth{grid-template-columns:1fr}.hero{padding:28px}.hero h1{font-size:1.8rem}.acard{padding:26px 20px}
+.app{grid-template-columns:1fr}.side{display:none}.main{padding:18px 14px 96px}.stats,.g2,.row{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}
+.bnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:40}.bnav{overflow-x:auto}.bnav .nv{min-width:60px;flex-direction:column;gap:2px;font-size:.68rem;padding:6px 2px;text-align:center;align-items:center}}
+@media(max-width:420px){.row{grid-template-columns:1fr}}
+@media print{body>*:not(#modal){display:none!important}.mo{position:static;background:none;padding:0}.mbox{box-shadow:none}.mf{display:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="auth" class="auth" hidden>
+  <div class="hero"><div class="brand">EduPay</div><div><h1>PTA fees, collected and accounted for.</h1><p>Record every contribution, issue receipts instantly and see who still owes, all from one school dashboard.</p></div><div class="strip"></div></div>
+  <div class="acard">
+    <div class="tabs" id="tabs"></div>
+    <div id="af"></div>
+  </div>
+</div>
+<div id="app" class="app" hidden>
+  <aside class="side"><div class="brand">EduPay</div><div class="sc" id="sSchool"></div><div id="sNav"></div>
+    <div style="margin-top:auto"><button class="nv" data-act="theme"><i>◐</i>Switch theme</button><button class="nv" data-act="logout"><i>⎋</i>Log out</button></div></aside>
+  <div><div class="main"><div class="top"><h2 id="title"></h2><div class="mut" id="clock"></div></div><div id="views"></div></div></div>
+  <nav class="bnav" id="bNav"></nav>
+</div>
+<div id="modal" class="mo" hidden><div class="mbox" id="mbox"></div></div>
+<div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const K='edupay_v3';
+let S={acct:null,students:[],tx:[],exp:[],lastBk:0,threats:[],att:0,lock:0,seq:0,cfg:{fee:100,key:'',term:'Term 1'}},me=null,cur='dash',tab='login',G=null,meth='mtn',idle;
+try{Object.assign(S,JSON.parse(localStorage.getItem(K)||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){toast('Could not save. Storage is full or blocked.')}};
+const money=n=>'GH₵ '+(+n||0).toLocaleString('en-GH',{minimumFractionDigits:2,maximumFractionDigits:2});
+const norm=p=>String(p||'').replace(/\D/g,'').replace(/^233/,'').replace(/^0/,'');
+const rnd=(n,a)=>Array.from(crypto.getRandomValues(new Uint32Array(n)),x=>a[x%a.length]).join('');
+const AL='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',genCode=()=>rnd(8,AL),genKey=()=>rnd(12,AL).match(/.{4}/g).join('-');
+async function hash(p,salt){const b=new TextEncoder().encode(salt+p);if(crypto.subtle){return[...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(x=>x.toString(16).padStart(2,'0')).join('')}let h=2166136261;for(const c of salt+p)h=Math.imul(h^c.charCodeAt(0),16777619);return'f'+(h>>>0).toString(16)}
+const LV=()=>S.tx.filter(t=>!t.void),paidOf=s=>LV().filter(t=>t.sid===s.id).reduce((a,t)=>a+t.amt,0),bal=s=>Math.max(0,S.cfg.fee-paidOf(s));
+const stat=s=>{const p=paidOf(s);return p>=S.cfg.fee?['ok','Paid']:p>0?['pa','Part paid']:['no','Unpaid']};
+const toast=m=>{const t=$('#toast');t.textContent=m;t.className='on';clearTimeout(t._);t._=setTimeout(()=>t.className='',3800)};
+const threat=m=>{S.threats.unshift({m,t:Date.now()});S.threats=S.threats.slice(0,30);save()};
+const fd=t=>new Date(t).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'});
+const msg=(id,m,e)=>{const x=$('#'+id);if(x){x.innerHTML=m?`<div class="msg ${e?'e':''}">${esc(m)}</div>`:''}};
+const pw=(id,l,ph)=>`<div class="f"><label>${l}</label><input type="password" id="${id}" placeholder="${ph||''}" autocomplete="${id.includes('new')||id.includes('rg')?'new-password':'current-password'}"></div>`;
+
+/* ---------- AUTH ---------- */
+function authView(){
+  $('#app').hidden=true;$('#auth').hidden=false;
+  const T=S.acct?[['login','Admin'],['parent','Parent']]:[['signup','Create school account'],['parent','Parent']];
+  if(!T.some(t=>t[0]===tab))tab=T[0][0];
+  $('#tabs').innerHTML=T.map(t=>`<button class="${t[0]===tab?'on':''}" data-act="tab" data-v="${t[0]}">${t[1]}</button>`).join('');
+  const F={
+   login:`<h2>Welcome back</h2><p class="mut" style="margin:4px 0 18px">${esc(S.acct?.school)}</p><div class="f"><label>Admin phone</label><input id="lp" type="tel" placeholder="024 000 0000" autocomplete="username"></div>${pw('lw','Password')}<div id="la"></div><button class="btn w" data-act="login">Log in</button><p style="margin-top:14px;text-align:center"><button class="btn g s" data-act="forgot">Forgot password?</button></p>`,
+   signup:`<h2>Set up your school</h2><p class="mut" style="margin:4px 0 18px">This becomes the administrator account.</p><div class="f"><label>School name</label><input id="rs"></div><div class="row"><div class="f"><label>Admin phone</label><input id="rp" type="tel"></div><div class="f"><label>Email</label><input id="re" type="email"></div></div>${pw('rg1','Password (8+ characters)')}${pw('rg2','Confirm password')}<div id="la"></div><button class="btn w" data-act="signup">Create account</button>`,
+   parent:`<h2>Parent access</h2><p class="mut" style="margin:4px 0 18px">${S.acct?esc(S.acct.school):'Ask the school to set up EduPay first.'}</p><div class="f"><label>Your phone (as registered with the school)</label><input id="pp" type="tel"></div><div class="f"><label>Child's full name</label><input id="pn"></div><div id="la"></div><button class="btn w" data-act="plogin">Continue</button>`};
+  $('#af').innerHTML=F[tab];
+  if(S.lock>Date.now())msg('la',`Too many attempts. Try again in ${Math.ceil((S.lock-Date.now())/60000)} min.`,1);
+}
+async function signup(){
+  const school=$('#rs').value.trim(),phone=$('#rp').value.trim(),email=$('#re').value.trim(),p1=$('#rg1').value,p2=$('#rg2').value;
+  if(!school||!phone||!email||!p1)return msg('la','Fill in every field.',1);
+  if(norm(phone).length<9)return msg('la','Enter a valid phone number.',1);
+  if(!/^\S+@\S+\.\S+$/.test(email))return msg('la','Enter a valid email address.',1);
+  if(p1.length<8)return msg('la','Password needs at least 8 characters.',1);
+  if(p1!==p2)return msg('la','Passwords do not match.',1);
+  const salt=rnd(16,AL),key=genKey();
+  S.acct={school,phone,email,salt,hash:await hash(p1,salt),rhash:await hash(key,salt)};save();
+  modal(`<h3>Save your recovery key</h3><p class="mut">This is the only way to reset your password. It is shown once. Write it down or take a screenshot.</p><div class="code" style="font-size:1.3rem">${key}</div><div class="mf"><button class="btn" data-act="enter">I have saved it</button></div>`,1);
+}
+async function login(){
+  if(S.lock>Date.now())return authView();
+  const ok=norm($('#lp').value)===norm(S.acct.phone)&&await hash($('#lw').value,S.acct.salt)===S.acct.hash;
+  if(!ok){S.att++;threat('Failed admin login from '+$('#lp').value);if(S.att>=5){S.lock=Date.now()+30*6e4;S.att=0}save();return S.lock>Date.now()?authView():msg('la',`Wrong phone or password. ${5-S.att} attempt(s) left.`,1)}
+  S.att=0;save();me={role:'admin'};enter();
+}
+function plogin(){
+  const ph=norm($('#pp').value),n=$('#pn').value.trim().toLowerCase();
+  const s=S.students.find(x=>norm(x.phone)===ph&&x.name.toLowerCase()===n);
+  if(!ph||!n||!s){threat('Failed parent lookup');return msg('la','No student found with that phone and name. Ask the school office to check your details.',1)}
+  me={role:'parent',sid:s.id};enter();
+}
+function enter(){closeModal();$('#auth').hidden=true;$('#app').hidden=false;$('#sSchool').textContent=S.acct.school;cur=me.role==='admin'?'dash':'pay';nav();go(cur);arm();if(me.role==='admin'&&S.tx.length&&Date.now()-S.lastBk>6048e5)setTimeout(()=>toast('Tip: download a backup from Settings. It has been over a week.'),1500);navigator.geolocation?.getCurrentPosition(p=>G=p.coords.latitude.toFixed(4)+', '+p.coords.longitude.toFixed(4),()=>{},{timeout:6000})}
+function logout(){const r=me?.role;me=null;clearTimeout(idle);tab=r==='parent'?'parent':'login';authView()}
+const arm=()=>{clearTimeout(idle);if(me)idle=setTimeout(()=>{logout();toast('Signed out after 20 minutes idle.')},12e5)};
+['click','keydown','touchstart'].forEach(e=>addEventListener(e,arm,{passive:true}));
+function forgot(){modal(`<h3>Reset password</h3><div class="f"><label>Recovery key</label><input id="fk" placeholder="XXXX-XXXX-XXXX"></div>${pw('fnew','New password (8+ characters)')}<div id="fa"></div><div class="mf"><button class="btn g" data-act="close">Cancel</button><button class="btn" data-act="reset">Reset password</button></div>`)}
+async function reset(){
+  const k=$('#fk').value.trim().toUpperCase(),n=$('#fnew').value;
+  if(n.length<8)return msg('fa','New password needs at least 8 characters.',1);
+  if(await hash(k,S.acct.salt)!==S.acct.rhash){threat('Bad recovery key attempt');return msg('fa','Recovery key is not correct.',1)}
+  S.acct.hash=await hash(n,S.acct.salt);S.lock=0;S.att=0;save();closeModal();authView();toast('Password reset. Log in with the new password.');
+}
+
+/* ---------- NAV / VIEWS ---------- */
+const NAV={admin:[['dash','Dashboard','◧'],['pay','Collect fee','₵'],['stu','Students','☺'],['tx','Receipts','☰'],['exp','Expenses','▤'],['rep','Reports','▥'],['set','Settings','⚙']],parent:[['pay','Pay fee','₵'],['tx','My receipts','☰']]};
+function nav(){const h=NAV[me.role].map(n=>`<button class="nv ${n[0]===cur?'on':''}" data-act="go" data-v="${n[0]}"><i>${n[2]}</i>${n[1]}</button>`).join('');$('#sNav').innerHTML=h;$('#bNav').innerHTML=h+`<button class="nv" data-act="logout"><i>⎋</i>Exit</button>`}
+function go(v){cur=v;nav();$('#title').textContent=NAV[me.role].find(n=>n[0]===v)[1];$('#views').innerHTML=V[v]();window.scrollTo(0,0);if(v==='pay')fillPay()}
+setInterval(()=>{const c=$('#clock');if(c)c.textContent=new Date().toLocaleString('en-GB',{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})},1000);
+const myTx=()=>me.role==='parent'?S.tx.filter(t=>t.sid===me.sid):S.tx;
+const trow=t=>`<tr><td>#${String(t.no).padStart(4,'0')}</td><td>${fd(t.t)}</td><td>${esc(t.sname)}</td><td>${t.void?`<s>${money(t.amt)}</s> <span class="b no">Void</span>`:money(t.amt)}</td><td>${esc(t.m.toUpperCase())}${t.demo?' (test)':''}</td><td><button class="btn g s" data-act="rcpt" data-id="${t.id}">View</button></td></tr>`;
+const V={
+dash(){
+  const n=new Date(),mo=LV().filter(t=>{const d=new Date(t.t);return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear()}).reduce((a,t)=>a+t.amt,0);
+  const exp=S.students.length*S.cfg.fee,col=S.students.reduce((a,s)=>a+Math.min(paidOf(s),S.cfg.fee),0),paid=S.students.filter(s=>paidOf(s)>=S.cfg.fee).length,rate=exp?Math.round(col/exp*100):0;
+  const days=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-6+i);return[d.toLocaleDateString('en-GB',{weekday:'short'}),LV().filter(t=>new Date(t.t).toDateString()===d.toDateString()).reduce((a,t)=>a+t.amt,0)]}),mx=Math.max(...days.map(d=>d[1]),1);
+  const bm=['mtn','telecel','card','cash'].map(m=>[m,LV().filter(t=>t.m===m).reduce((a,t)=>a+t.amt,0)]);
+  const gh=S.students.filter(s=>bal(s)>0).sort((a,b)=>bal(b)-bal(a)).slice(0,5);
+  return`<div class="stats"><div class="st"><span class="mut">Collected this month</span><b>${money(mo)}</b></div><div class="st"><span class="mut">Outstanding (${esc(S.cfg.term)})</span><b>${money(Math.max(0,exp-col))}</b></div><div class="st"><span class="mut">Students fully paid</span><b>${paid} / ${S.students.length}</b></div><div class="st"><span class="mut">Collection rate</span><b>${rate}%</b><div class="bar" style="margin-top:8px"><i style="width:${rate}%"></i></div></div></div>
+  <div class="g2"><div class="card"><h3>Last 7 days</h3><div class="chart">${days.map(d=>`<div title="${money(d[1])}"><span style="height:${d[1]/mx*100}%"></span>${d[0]}</div>`).join('')}</div></div>
+  <div class="card"><h3>By payment method</h3>${bm.map(b=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>${{mtn:'MTN MoMo',telecel:'Telecel Cash',card:'Card',cash:'Cash at office'}[b[0]]}</span><b>${money(b[1])}</b></div>`).join('')}</div>
+  <div class="card"><h3>Biggest balances</h3>${gh.length?gh.map(s=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>${esc(s.name)} <span class="mut">${esc(s.cls)}</span></span><b>${money(bal(s))}</b></div>`).join(''):'<p class="mut">Nobody owes anything. Add students to start tracking.</p>'}</div>
+  <div class="card"><h3>Money in and out</h3>${(()=>{const i=LV().reduce((a,t)=>a+t.amt,0),o=S.exp.reduce((a,e)=>a+e.amt,0);return`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>Total collected</span><b>${money(i)}</b></div><div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)"><span>Total spent</span><b>${money(o)}</b></div><div style="display:flex;justify-content:space-between;padding:8px 0"><span>Balance in hand</span><b style="color:${i-o<0?'var(--bad)':'var(--ok)'}">${money(i-o)}</b></div>`})()}</div><div class="card"><h3>Recent receipts</h3>${S.tx.length?`<div class="tw"><table><tbody>${S.tx.slice(0,5).map(trow).join('')}</tbody></table></div>`:'<p class="mut">No payments yet. Use Collect fee to record the first one.</p>'}</div></div>`},
+pay(){
+  const p=me.role==='parent',list=p?S.students.filter(s=>s.id===me.sid):S.students;
+  if(!list.length)return`<div class="card"><p>Add at least one student before collecting fees.</p><br><button class="btn" data-act="go" data-v="stu">Go to Students</button></div>`;
+  return`<div class="g2"><div class="card"><h3>Who is paying</h3><div class="f"><label>Student</label><select id="p-s">${list.map(s=>`<option value="${esc(s.id)}">${esc(s.name)} · ${esc(s.cls)}</option>`).join('')}</select></div><div id="p-i" class="msg"></div>
+  <div class="f"><label>Parent or guardian name</label><input id="p-by"></div><div class="row"><div class="f"><label>Phone</label><input id="p-ph" type="tel"></div><div class="f"><label>Email (for Paystack)</label><input id="p-em" type="email"></div></div><div class="f"><label>Amount (GH₵)</label><input id="p-a" type="number" min="1" step="0.01"></div></div>
+  <div class="card"><h3>How are they paying?</h3><div class="pills" id="pills">${[['mtn','MTN MoMo'],['telecel','Telecel Cash'],['card','Card'],...(p?[]:[['cash','Cash at office']])].map(m=>`<button class="pill ${m[0]===meth?'on':''}" data-act="meth" data-v="${m[0]}">${m[1]}</button>`).join('')}</div>
+  <div id="pa"></div><button class="btn w" data-act="pay">Pay now</button><p class="mut" style="margin-top:12px">${S.cfg.key.startsWith('pk_')?'Mobile money and card payments open in Paystack's secure window.':'No Paystack key is set, so payments are saved as test entries. Add your key in Settings to go live.'}</p></div></div>`},
+stu(){return`<div class="tb"><input id="q" placeholder="Search name, ID, class or parent" data-in="stuq"><select id="fl" data-in="stuq"><option value="">All statuses</option><option value="ok">Paid</option><option value="pa">Part paid</option><option value="no">Unpaid</option></select><button class="btn" data-act="sform">Add student</button><button class="btn g" data-act="imp">Import CSV</button><input type="file" id="csv" accept=".csv,text/csv" hidden></div><div class="card"><div class="tw"><table><thead><tr><th>ID</th><th>Student</th><th>Class</th><th>Parent</th><th>Paid</th><th>Balance</th><th>Status</th><th></th></tr></thead><tbody id="sb">${stuRows()}</tbody></table></div></div><p class="mut" style="margin-top:10px">CSV columns: id, name, class, house, parent, phone</p>`},
+tx(){return`<div class="tb"><input id="q" placeholder="Search student, parent or receipt no." data-in="txq">${me.role==='admin'?'<button class="btn g" data-act="csvx">Export CSV</button>':''}</div><div class="card"><div class="tw"><table><thead><tr><th>No.</th><th>Date</th><th>Student</th><th>Amount</th><th>Method</th><th></th></tr></thead><tbody id="tb">${txRows()}</tbody></table></div></div>`},
+exp(){const tot=S.exp.reduce((a,e)=>a+e.amt,0);return`<div class="g2"><div class="card"><h3>Record spending</h3><div class="f"><label>What was it for?</label><input id="e-t"></div><div class="row"><div class="f"><label>Amount (GH₵)</label><input id="e-a" type="number" min="0" step="0.01"></div><div class="f"><label>Category</label><select id="e-c">${['Maintenance','Teaching aids','Events','Security','Utilities','Other'].map(c=>`<option>${c}</option>`).join('')}</select></div></div><div class="f"><label>Date</label><input id="e-d" type="date" value="${new Date().toISOString().slice(0,10)}"></div><div id="ea"></div><button class="btn" data-act="eadd">Save expense</button></div><div class="card"><h3>Spent so far: ${money(tot)}</h3><div class="tw"><table><tbody>${S.exp.length?S.exp.map(e=>`<tr><td>${esc(e.d)}</td><td>${esc(e.title)}<div class="mut">${esc(e.cat)}</div></td><td>${money(e.amt)}</td><td><button class="btn g s" data-act="edel" data-id="${e.id}">Delete</button></td></tr>`).join(''):'<tr><td class="mut">No spending recorded yet.</td></tr>'}</tbody></table></div></div></div>`},
+rep(){return`<div class="tb"><button class="btn" data-act="prep">Print report</button></div><div class="card">${repHtml(1)}</div>`},
+set(){const a=S.acct;return`<div class="g2"><div class="card"><h3>School and fees</h3><div class="f"><label>School name</label><input id="c-sc" value="${esc(a.school)}"></div><div class="row"><div class="f"><label>PTA fee per student (GH₵)</label><input id="c-fee" type="number" min="0" value="${S.cfg.fee}"></div><div class="f"><label>Term / period</label><input id="c-term" value="${esc(S.cfg.term)}"></div></div><div class="f"><label>Paystack public key (pk_live_… or pk_test_…)</label><input id="c-key" value="${esc(S.cfg.key)}"></div><div id="ca"></div><button class="btn" data-act="cfg">Save settings</button></div>
+  <div class="card"><h3>Change password</h3>${pw('cp0','Current password')}${pw('cp-new1','New password (8+ characters)')}<div id="cpa"></div><button class="btn" data-act="cpass">Update password</button></div>
+  <div class="card"><h3>Backup</h3><p class="mut" style="margin-bottom:12px">Data is stored in this browser. Download a backup regularly and before clearing browser data.</p><div class="tb"><button class="btn" data-act="bk">Download backup</button><button class="btn g" data-act="rs">Restore backup</button><input type="file" id="rsf" accept=".json" hidden></div><button class="btn d s" data-act="wipe">Erase all data</button></div>
+  <div class="card"><h3>Security log</h3>${S.threats.length?S.threats.slice(0,8).map(t=>`<div style="padding:6px 0;border-bottom:1px solid var(--line)">${esc(t.m)}<div class="mut">${fd(t.t)}</div></div>`).join(''):'<p class="mut">No suspicious activity recorded.</p>'}</div></div>`}};
+function stuRows(){const q=($('#q')?.value||'').toLowerCase(),f=$('#fl')?.value||'';
+  const l=S.students.filter(s=>(s.name+s.id+s.cls+s.parent).toLowerCase().includes(q)&&(!f||stat(s)[0]===f));
+  return l.length?l.map(s=>{const st=stat(s);return`<tr><td>${esc(s.id)}</td><td>${esc(s.name)}</td><td>${esc(s.cls)}</td><td>${esc(s.parent)}<div class="mut">${esc(s.phone)}</div></td><td>${money(paidOf(s))}</td><td>${money(bal(s))}</td><td><span class="b ${st[0]}">${st[1]}</span></td><td style="white-space:nowrap">${bal(s)>0?`<a class="btn g s" target="_blank" rel="noopener" href="${waUrl(s.phone,remTxt(s))}">Remind</a> `:''}<button class="btn g s" data-act="sform" data-id="${esc(s.id)}">Edit</button> <button class="btn g s" data-act="sdel" data-id="${esc(s.id)}">Remove</button></td></tr>`}).join(''):'<tr><td colspan="8" class="mut">No students match. Add one or import a CSV.</td></tr>'}
+function txRows(){const q=($('#q')?.value||'').toLowerCase(),l=myTx().filter(t=>(t.sname+t.by+t.no+t.ref).toLowerCase().includes(q));return l.length?l.map(trow).join(''):'<tr><td colspan="6" class="mut">No receipts yet.</td></tr>'}
+
+/* ---------- PAYMENTS ---------- */
+function fillPay(){const s=S.students.find(x=>x.id===$('#p-s')?.value);if(!s)return;const b=bal(s);$('#p-i').textContent=b>0?`Balance for ${S.cfg.term}: ${money(b)} of ${money(S.cfg.fee)}`:`Fully paid for ${S.cfg.term}.`;$('#p-by').value=s.parent;$('#p-ph').value=s.phone;$('#p-a').value=b||''}
+function pay(){
+  const s=S.students.find(x=>x.id===$('#p-s').value),amt=+$('#p-a').value,by=$('#p-by').value.trim(),phone=$('#p-ph').value.trim(),email=$('#p-em').value.trim();
+  if(!s||!by||!(amt>0))return msg('pa','Enter the parent name and an amount.',1);
+  if(amt>bal(s))return msg('pa',`Amount is more than the balance of ${money(bal(s))}.`,1);
+  if(meth!=='cash'&&!/^\S+@\S+\.\S+$/.test(email))return msg('pa','Paystack needs an email address for the receipt.',1);
+  const d={sid:s.id,sname:s.name,cls:s.cls,amt,by,phone,email,m:meth};
+  if(meth==='cash'){if(me.role!=='admin')return;return rec(d,'CASH-'+Date.now())}
+  if(!S.cfg.key.startsWith('pk_')){if(!confirm('No Paystack key is set. Save this as a TEST payment?'))return;return rec({...d,demo:true},'TEST-'+Date.now())}
+  if(!window.PaystackPop)return msg('pa','Paystack could not load. Check your internet connection and try again.',1);
+  PaystackPop.setup({key:S.cfg.key,email,amount:Math.round(amt*100),currency:'GHS',ref:'PTA'+Date.now(),channels:[meth==='card'?'card':'mobile_money'],
+   metadata:{custom_fields:[{display_name:'Student',variable_name:'student',value:s.name},{display_name:'Class',variable_name:'class',value:s.cls}]},
+   callback:r=>rec(d,r.reference),onClose:()=>msg('pa','Payment window closed. No charge was made.',1)}).openIframe();
+}
+function rec(d,ref){const t={id:'t'+Date.now(),no:++S.seq,ref,code:genCode(),t:Date.now(),gps:G||'',...d};S.tx.unshift(t);save();toast('Payment recorded');receipt(t.id);if(cur==='pay')fillPay()}
+function receipt(id){const t=S.tx.find(x=>x.id===id);if(!t)return;const s=S.students.find(x=>x.id===t.sid);
+  modal(`<div class="rc"><h3>${esc(S.acct.school)}</h3><p class="mut">PTA payment receipt #${String(t.no).padStart(4,'0')}${t.demo?' · TEST ENTRY':''}${t.void?' · VOIDED ('+esc(t.vr)+')':''}</p><dl><dt>Date</dt><dd>${fd(t.t)}</dd><dt>Student</dt><dd>${esc(t.sname)} (${esc(t.cls)})</dd><dt>Paid by</dt><dd>${esc(t.by)}</dd><dt>Method</dt><dd>${esc(t.m.toUpperCase())}</dd><dt>Reference</dt><dd>${esc(t.ref)}</dd><dt>Amount</dt><dd>${money(t.amt)}</dd><dt>Balance now</dt><dd>${s?money(bal(s)):'-'}</dd></dl><div class="mut" style="text-align:center">Verification code</div><div class="code">${esc(t.code)}</div></div><div class="mf"><button class="btn g" data-act="close">Close</button>${me.role==='admin'&&!t.void?`<button class="btn d" data-act="void" data-id="${t.id}">Void</button>`:''}${t.phone&&!t.void?`<a class="btn g" target="_blank" rel="noopener" href="${waUrl(t.phone,'Receipt #'+t.no+' from '+S.acct.school+': '+money(t.amt)+' received for '+t.sname+' ('+t.cls+'). Code '+t.code+'. Balance '+money(s?bal(s):0)+'.')}">WhatsApp</a>`:''}<button class="btn" onclick="print()">Print</button></div>`)}
+
+/* ---------- STUDENTS ---------- */
+function sform(id){const s=S.students.find(x=>x.id===id)||{};
+  modal(`<h3>${id?'Edit':'Add'} student</h3><div class="row"><div class="f"><label>Student ID</label><input id="s-id" value="${esc(s.id)}" ${id?'readonly':''}></div><div class="f"><label>Full name</label><input id="s-n" value="${esc(s.name)}"></div></div><div class="row"><div class="f"><label>Class</label><input id="s-c" value="${esc(s.cls)}"></div><div class="f"><label>House</label><input id="s-h" value="${esc(s.house)}"></div></div><div class="row"><div class="f"><label>Parent or guardian</label><input id="s-p" value="${esc(s.parent)}"></div><div class="f"><label>Parent phone (used for parent login)</label><input id="s-ph" type="tel" value="${esc(s.phone)}"></div></div><div id="sa"></div><div class="mf"><button class="btn g" data-act="close">Cancel</button><button class="btn" data-act="ssave" data-id="${esc(id)}">Save student</button></div>`)}
+function ssave(old){
+  const v={id:$('#s-id').value.trim(),name:$('#s-n').value.trim(),cls:$('#s-c').value.trim(),house:$('#s-h').value.trim(),parent:$('#s-p').value.trim(),phone:$('#s-ph').value.trim()};
+  if(!v.id||!v.name||!v.cls||!v.parent||norm(v.phone).length<9)return msg('sa','Fill in ID, name, class, parent and a valid phone.',1);
+  if(old){Object.assign(S.students.find(x=>x.id===old),v);S.tx.forEach(t=>{if(t.sid===old){t.sname=v.name;t.cls=v.cls}})}
+  else{if(S.students.some(x=>x.id===v.id))return msg('sa','That student ID already exists.',1);S.students.push(v)}
+  save();closeModal();go('stu');toast('Student saved');
+}
+function importCsv(f){const r=new FileReader();r.onload=()=>{let n=0;r.result.split(/\r?\n/).forEach((l,i)=>{const c=l.split(',').map(x=>x.trim().replace(/^"|"$/g,''));if(c.length<6||(i===0&&c[0].toLowerCase()==='id')||!c[0]||S.students.some(s=>s.id===c[0]))return;S.students.push({id:c[0],name:c[1],cls:c[2],house:c[3],parent:c[4],phone:c[5]});n++});save();go('stu');toast(n+' student(s) imported')};r.readAsText(f)}
+function exportCsv(){const cell=v=>{v=String(v??'');if(/^[=+\-@]/.test(v))v="'"+v;return'"'+v.replace(/"/g,'""')+'"'};
+  const rows=[['Receipt','Date','Student','Class','Parent','Phone','Amount','Method','Reference','Code']].concat(S.tx.map(t=>[t.no,fd(t.t),t.sname,t.cls,t.by,t.phone,t.amt,t.m,t.ref,t.code]));
+  dl(rows.map(r=>r.map(cell).join(',')).join('\n'),'text/csv','pta-receipts-'+new Date().toISOString().slice(0,10)+'.csv')}
+const dl=(txt,type,name)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
+
+/* ---------- REPORTS, EXPENSES, VOIDS, REMINDERS ---------- */
+const waUrl=(p,t)=>`https://wa.me/233${norm(p)}?text=${encodeURIComponent(t)}`,remTxt=s=>`Hello ${s.parent}, the ${S.cfg.term} PTA balance for ${s.name} (${s.cls}) is ${money(bal(s))}. Please pay when you can. Thank you. ${S.acct.school}`;
+function eadd(){const title=$('#e-t').value.trim(),amt=+$('#e-a').value;if(!title||!(amt>0))return msg('ea','Enter what it was for and an amount.',1);S.exp.unshift({id:'e'+Date.now(),title,amt,cat:$('#e-c').value,d:$('#e-d').value});save();go('exp');toast('Expense saved')}
+function voidTx(id){const t=S.tx.find(x=>x.id===id);if(!t||t.void)return;const r=prompt('Reason for voiding receipt #'+t.no+'? Refund mobile money or card payments separately in Paystack.');if(!r)return;t.void=true;t.vr=r;threat('Receipt #'+t.no+' voided: '+r);closeModal();go(cur);toast('Receipt voided')}
+function repHtml(live){const g={};S.students.forEach(s=>{const c=g[s.cls]||(g[s.cls]={n:0,e:0,c:0});c.n++;c.e+=S.cfg.fee;c.c+=Math.min(paidOf(s),S.cfg.fee)});
+const db=S.students.filter(s=>bal(s)>0).sort((a,b)=>a.cls.localeCompare(b.cls)||a.name.localeCompare(b.name));
+return`<h3>${esc(S.acct.school)} · ${esc(S.cfg.term)} PTA report</h3><p class="mut">${fd(Date.now())}</p><h3 style="margin-top:16px">By class</h3><div class="tw"><table><thead><tr><th>Class</th><th>Students</th><th>Expected</th><th>Collected</th><th>Rate</th></tr></thead><tbody>${Object.keys(g).sort().map(k=>{const c=g[k];return`<tr><td>${esc(k)}</td><td>${c.n}</td><td>${money(c.e)}</td><td>${money(c.c)}</td><td>${c.e?Math.round(c.c/c.e*100):0}%</td></tr>`}).join('')||'<tr><td colspan="5" class="mut">No students yet.</td></tr>'}</tbody></table></div><h3 style="margin-top:16px">Who still owes (${db.length})</h3><div class="tw"><table><thead><tr><th>Student</th><th>Class</th><th>Parent</th><th>Balance</th>${live?'<th></th>':''}</tr></thead><tbody>${db.map(s=>`<tr><td>${esc(s.name)}</td><td>${esc(s.cls)}</td><td>${esc(s.parent)}<div class="mut">${esc(s.phone)}</div></td><td>${money(bal(s))}</td>${live?`<td><a class="btn g s" target="_blank" rel="noopener" href="${waUrl(s.phone,remTxt(s))}">Remind</a></td>`:''}</tr>`).join('')||'<tr><td colspan="5" class="mut">Everyone is paid up.</td></tr>'}</tbody></table></div>`}
+
+/* ---------- SETTINGS ---------- */
+function cfg(){const fee=+$('#c-fee').value,sc=$('#c-sc').value.trim(),key=$('#c-key').value.trim();
+  if(!sc||!(fee>=0))return msg('ca','Enter a school name and a valid fee.',1);
+  if(key&&!/^pk_(live|test)_/.test(key))return msg('ca','Paystack public keys start with pk_live_ or pk_test_. Never paste a secret key (sk_) here.',1);
+  S.acct.school=sc;S.cfg={fee,term:$('#c-term').value.trim()||'Term',key};save();$('#sSchool').textContent=sc;msg('ca','Settings saved.')}
+async function cpass(){const o=$('#cp0').value,n=$('#cp-new1').value;
+  if(await hash(o,S.acct.salt)!==S.acct.hash){threat('Wrong current password on change attempt');return msg('cpa','Current password is not correct.',1)}
+  if(n.length<8)return msg('cpa','New password needs at least 8 characters.',1);
+  S.acct.hash=await hash(n,S.acct.salt);save();$('#cp0').value=$('#cp-new1').value='';msg('cpa','Password updated.')}
+function restore(f){const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.acct||!Array.isArray(d.students)||!Array.isArray(d.tx))throw 0;if(!confirm('Replace all current data with this backup?'))return;S=Object.assign(S,d);save();go('set');toast('Backup restored')}catch(e){toast('That file is not a valid EduPay backup.')}};r.readAsText(f)}
+
+/* ---------- MODAL + EVENTS ---------- */
+function modal(h,lock){$('#mbox').innerHTML=h;$('#modal').hidden=false;$('#modal').dataset.lock=lock?1:''}
+function closeModal(){$('#modal').hidden=true}
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal'&&!e.target.dataset.lock)closeModal()});
+const A={tab:d=>{tab=d.v;authView()},signup,login,plogin,forgot,reset,enter:()=>{me={role:'admin'};enter()},close:closeModal,logout,go:d=>go(d.v),
+ theme:()=>{const t=document.documentElement.dataset.t==='dark'?'light':'dark';document.documentElement.dataset.t=t;try{localStorage.setItem('edupay_t',t)}catch(e){}},
+ meth:d=>{meth=d.v;document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',p.dataset.v===meth))},pay,rcpt:d=>receipt(d.id),
+ sform:d=>sform(d.id||''),ssave:d=>ssave(d.id),sdel:d=>{if(confirm('Remove this student? Their receipts are kept.')){S.students=S.students.filter(s=>s.id!==d.id);save();go('stu')}},
+ imp:()=>$('#csv').click(),eadd,edel:d=>{if(confirm('Delete this expense?')){S.exp=S.exp.filter(e=>e.id!==d.id);save();go('exp')}},void:d=>voidTx(d.id),prep:()=>modal(repHtml(0)+`<div class="mf"><button class="btn g" data-act="close">Close</button><button class="btn" onclick="print()">Print</button></div>`),csvx:exportCsv,cfg,cpass,bk:()=>{S.lastBk=Date.now();save();dl(JSON.stringify(S),'application/json','edupay-backup-'+new Date().toISOString().slice(0,10)+'.json')},rs:()=>$('#rsf').click(),
+ wipe:()=>{if(prompt('Type ERASE to delete every student, receipt and your account.')==='ERASE'){localStorage.removeItem(K);location.reload()}}};
+document.addEventListener('click',e=>{const a=e.target.closest('[data-act]');if(a&&A[a.dataset.act])A[a.dataset.act](a.dataset)});
+document.addEventListener('input',e=>{const k=e.target.dataset.in;if(k==='stuq')$('#sb').innerHTML=stuRows();if(k==='txq')$('#tb').innerHTML=txRows()});
+document.addEventListener('change',e=>{if(e.target.id==='p-s')fillPay();if(e.target.id==='fl')$('#sb').innerHTML=stuRows();if(e.target.id==='csv'&&e.target.files[0])importCsv(e.target.files[0]);if(e.target.id==='rsf'&&e.target.files[0])restore(e.target.files[0]);e.target.type==='file'&&(e.target.value='')});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!$('#auth').hidden&&e.target.tagName==='INPUT'){const b=$('#af .btn.w');b&&b.click()}if(e.key==='Escape'&&!$('#modal').dataset.lock)closeModal()});
+try{const t=localStorage.getItem('edupay_t')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.dataset.t=t}catch(e){}
+tab=S.acct?'login':'signup';authView();
+</script>
+</body>
+</html>
